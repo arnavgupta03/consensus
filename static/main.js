@@ -99,7 +99,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = parseInt(document.getElementById("p4users").innerText);
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
-            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
+            socket.emit("postVote", {"vote": false, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 
         var p4userInfo = document.createElement("div");

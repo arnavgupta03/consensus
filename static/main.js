@@ -85,6 +85,8 @@ function onLoad() {
     socket.on("switchPageThree", function(genres) {
         document.getElementById("page2").remove();
 
+        document.getElementById("page3").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
         var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch.");
@@ -93,10 +95,12 @@ function onLoad() {
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
+        p3checkboxGroup.className = "btn-group";
         for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";
             p3checkbox.id = "p3checkbox" + i.toString();
+            p3checkbox.className = "btn-check";
             p3checkbox.addEventListener("click", () => {
                 var checked = [];
                 for (var i = 0; i < 19; i++) {
@@ -117,6 +121,7 @@ function onLoad() {
         }
         var p3button = document.createElement("button");
         p3button.id = "p3button";
+        p3button.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         var p3buttonTextNode = document.createTextNode("Submit Genres");
         p3button.appendChild(p3buttonTextNode);
         p3button.addEventListener("click", () => {

@@ -104,10 +104,15 @@ function onLoad() {
         
         document.getElementById("page1").remove();
 
+        document.getElementById("page2").className = "m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var p2title = document.createElement("h3");
         p2title.id = "p2title";
         var p2titleTextNode = document.createTextNode("Great, your group code is " + groupCode + "! Please wait for everyone to join before starting.");
         p2title.appendChild(p2titleTextNode);
+
+        document.createElement("br");
+        document.createElement("br");
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";

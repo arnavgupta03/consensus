@@ -7,11 +7,15 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css') }}">
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body onload="onLoad()">
-        <div id="page1" class="align-middle">
-            <h1 id="p1mainTitle">Consensus</h1>
-            <h3 id="p1mainDescript">Find a movie to watch together quicker!</h3>
-            <h5 id="p1instructions">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
+    <body onload="onLoad()" class="bg-yellow-300">
+        <br><br>
+        <div id="page1" class="m-auto w-5/6 h-1/2 bg-indigo-400 align-middle">
+            <h1 id="p1mainTitle" class="text-center text-2xl align-middle font-serif m-auto">Consensus</h1>
+            <br>
+            <h3 id="p1mainDescript" class="text-center align-middle">Find a movie to watch together quicker!</h3>
+            <br>
+            <h5 id="p1instructions" class="text-center align-middle">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
+            <br>
             <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();">
             <button id="p1joinCreateGroup">Join/Create Group</button>
         </div>

@@ -115,13 +115,13 @@ function onLoad() {
 
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
+        p3title.className = "text-center";
         var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch. Only whoever chose the last genre may submit.");
         p3title.appendChild(p3titleTextNode);
         document.getElementById("page3").appendChild(p3title);
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
-        p3checkboxGroup.className = "grid grid-flow-col";
         for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";

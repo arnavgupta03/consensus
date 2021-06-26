@@ -146,6 +146,7 @@ function onLoad() {
             socket.emit("disconnected", {"groupCode": groupCode, "page": page});
         });
         document.getElementById("leave").appendChild(leaveButton);
+        document.getElementById("page2").className = "m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
 
         var p2title = document.createElement("h3");
         p2title.id = "p2title";
@@ -156,6 +157,8 @@ function onLoad() {
         p2room.id = "p2room";
         /*var p2roomTextNode = document.createTextNode("Users in room: " + people);
         p2title.appendChild(p2roomTextNode);*/
+        document.createElement("br");
+        document.createElement("br");
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";

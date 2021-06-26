@@ -11,7 +11,6 @@ function onLoad() {
     socket.on("nextMovie", function(filmInfo) {
         localStorage.setItem("title", filmInfo["title"]);
         localStorage.setItem("id", filmInfo["id"]);
-        localStorage.setItem("room", filmInfo["room"]);
         localStorage.setItem("orderNumber", filmInfo["orderNumber"]);
 
         document.getElementById("p4title").innerText = filmInfo["title"];
@@ -109,7 +108,6 @@ function onLoad() {
         p4users.id = "p4users";
         p4users.innerText = filmInfo["users"];
         localStorage.setItem("users", filmInfo["users"]);
-        console.log(filmInfo["users"]);
         var p4done = document.createElement("p");
         p4done.id = "p4done";
         p4done.innerText = "0";

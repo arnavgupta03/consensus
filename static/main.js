@@ -46,6 +46,8 @@ function onLoad() {
 
         document.getElementById("page3").remove();
 
+        document.getElementById("page4").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var p4instruct = document.createElement("h3");
         p4instruct.id = "p4instruct";
         var p4instructTextNode = document.createTextNode("Now we're going to give you some movies! Tell us if you'd want to watch it or not.");
@@ -74,6 +76,7 @@ function onLoad() {
 
         var p4poster = document.createElement("img");
         p4poster.id = "p4poster";
+        p4poster.className = "w-16 h-16";
         p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
         p4movieCard.appendChild(p4poster);
 

@@ -4,6 +4,28 @@ function onLoad() {
         socket.emit("connect");
     });
 
+    socket.on("waitForVote", function() {
+        document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
+    });
+
+    socket.on("nextMovie", function(filmInfo) {
+        localStorage.setItem("title", filmInfo["title"]);
+        localStorage.setItem("id", filmInfo["id"]);
+        localStorage.setItem("room", filmInfo["room"]);
+        localStorage.setItem("orderNumber", filmInfo["orderNumber"]);
+
+        document.getElementById("p4title").innerText = filmInfo["title"];
+        document.getElementById("p4descript").innerText = filmInfo["overview"];
+        document.getElementById("p4rating").innerText = filmInfo["rating"];
+        document.getElementById("p4poster").src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
+
+        document.getElementById("p4users").innerText = localStorage.getItem("users");
+        document.getElementById("p4done").innerText = 0;
+
+        document.getElementById("p4watch").style.visibility = "visible";
+        document.getElementById("p4not").style.visibility = "visible";
+    });
+
     socket.on("leaveUser", function(data) {
         if (data["page"] === 2)
         {
@@ -17,6 +39,11 @@ function onLoad() {
     });
 
     socket.on("startSelect", function(filmInfo) {
+        localStorage.setItem("title", filmInfo["title"]);
+        localStorage.setItem("id", filmInfo["id"]);
+        localStorage.setItem("room", filmInfo["room"]);
+        localStorage.setItem("orderNumber", 0);
+
         document.getElementById("page3").remove();
 
         var p4instruct = document.createElement("h3");
@@ -46,6 +73,7 @@ function onLoad() {
         p4movieCard.appendChild(p4rating);
 
         var p4poster = document.createElement("img");
+        p4poster.id = "p4poster";
         p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
         p4movieCard.appendChild(p4poster);
 
@@ -59,7 +87,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = parseInt(document.getElementById("p4users").innerText);
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
-            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": filmInfo["room"]});
+            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 
         var p4not = document.createElement("button");
@@ -72,7 +100,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = parseInt(document.getElementById("p4users").innerText);
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
-            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": filmInfo["room"]});
+            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 
         var p4userInfo = document.createElement("div");
@@ -80,6 +108,7 @@ function onLoad() {
         var p4users = document.createElement("p");
         p4users.id = "p4users";
         p4users.innerText = filmInfo["users"];
+        localStorage.setItem("users", filmInfo["users"]);
         console.log(filmInfo["users"]);
         var p4done = document.createElement("p");
         p4done.id = "p4done";
@@ -102,7 +131,10 @@ function onLoad() {
         alert("Please add at least one genre");
     });
 
-    socket.on("updateGenres", function(genres) {
+    socket.on("updateGenres", function(data) {
+        var genres = data["genres"];
+        var ids = data["ids"];
+        localStorage.setItem("genres", ids);
         for (var i = 0; i < genres.length; i++) {
             document.getElementById("p3checkbox" + genres[i]).checked = true;
         }

@@ -11,7 +11,6 @@ function onLoad() {
     socket.on("nextMovie", function(filmInfo) {
         localStorage.setItem("title", filmInfo["title"]);
         localStorage.setItem("id", filmInfo["id"]);
-        localStorage.setItem("room", filmInfo["room"]);
         localStorage.setItem("orderNumber", filmInfo["orderNumber"]);
 
         document.getElementById("p4title").innerText = filmInfo["title"];
@@ -103,7 +102,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = parseInt(document.getElementById("p4users").innerText);
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
-            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
+            socket.emit("postVote", {"vote": false, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 
         var p4userInfo = document.createElement("div");
@@ -112,7 +111,6 @@ function onLoad() {
         p4users.id = "p4users";
         p4users.innerText = filmInfo["users"];
         localStorage.setItem("users", filmInfo["users"]);
-        console.log(filmInfo["users"]);
         var p4done = document.createElement("p");
         p4done.id = "p4done";
         p4done.innerText = "0";

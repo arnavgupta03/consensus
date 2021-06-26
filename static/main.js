@@ -95,12 +95,11 @@ function onLoad() {
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
-        p3checkboxGroup.className = "btn-group";
         for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";
             p3checkbox.id = "p3checkbox" + i.toString();
-            p3checkbox.className = "btn-check";
+            p3checkbox.className = "form-checkbox";
             p3checkbox.addEventListener("click", () => {
                 var checked = [];
                 for (var i = 0; i < 19; i++) {

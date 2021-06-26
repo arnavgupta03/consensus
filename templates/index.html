@@ -9,21 +9,23 @@
     </head>
     <body onload="onLoad()" class="bg-yellow-300 flex h-screen">
         <br><br>
-        <div id="page1" class="m-auto w-5/6 h-1/2 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle">
-            <br><br>
-            <h1 id="p1mainTitle" class="text-center text-2xl align-middle font-serif m-auto">Consensus</h1>
+        <div id="page1" class="m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center">
+            <br>
+            <h1 id="p1mainTitle" class="text-center text-2xl align-middle font-extrabold">Consensus</h1>
             <br>
             <h3 id="p1mainDescript" class="text-center align-middle">Find a movie to watch together quicker!</h3>
             <br>
             <h5 id="p1instructions" class="text-center align-middle">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
+            <br><br>
+            <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();" class="rounded focus:ring-2 focus:ring-red-500">
             <br>
-            <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();" class="rounded-full hover:ring-red-500">
             <button id="p1joinCreateGroup" class="text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full">Join/Create Group</button>
+
+            <br><br>
+            <p class="text-center">Movie information from TMDB.</p>
         </div>
         <div id="page2"></div>
         <div id="page3"></div>
         <div id="page4"></div>
-
-        <footer>Movie information from TMDB.</footer>
     </body>
 </html>

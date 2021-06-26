@@ -7,9 +7,10 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css') }}">
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body onload="onLoad()" class="bg-yellow-300">
+    <body onload="onLoad()" class="bg-yellow-300 flex h-screen">
         <br><br>
-        <div id="page1" class="m-auto w-5/6 h-1/2 bg-indigo-400 align-middle">
+        <div id="page1" class="m-auto w-5/6 h-1/2 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow">
+            <br><br>
             <h1 id="p1mainTitle" class="text-center text-2xl align-middle font-serif m-auto">Consensus</h1>
             <br>
             <h3 id="p1mainDescript" class="text-center align-middle">Find a movie to watch together quicker!</h3>
@@ -17,7 +18,7 @@
             <h5 id="p1instructions" class="text-center align-middle">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
             <br>
             <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();">
-            <button id="p1joinCreateGroup">Join/Create Group</button>
+            <button id="p1joinCreateGroup" class="text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full">Join/Create Group</button>
         </div>
         <div id="page2"></div>
         <div id="page3"></div>

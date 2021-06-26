@@ -4,6 +4,18 @@ function onLoad() {
         socket.emit("connect");
     });
 
+    socket.on("leaveUser", function(data) {
+        if (data["page"] === 2)
+        {
+            document.getElementById("p2room").innerHTML = "Users in room: " + 0;
+        }
+        location.reload();
+    });
+
+    socket.on("newUser", function(users) {
+        document.getElementById("p2room").innerHTML = "Users in room: " + users;
+    });
+
     socket.on("startSelect", function(filmInfo) {
         document.getElementById("page3").remove();
 
@@ -37,7 +49,23 @@ function onLoad() {
         p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
         p4movieCard.appendChild(p4poster);
 
+        var p4watch = document.createElement("button");
+        p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
+        p4watch.addEventListener("click", () => {
+
+        });
+
+        var p4not = document.createElement("button");
+        p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
+        p4not.addEventListener("click", () => {
+
+        });
+
         document.getElementById("page4").appendChild(p4movieCard);
+        document.getElementById("page4").appendChild(p4watch);
+        document.getElementById("page4").appendChild(p4not);
+
+        console.log(io.in(filmInfo["room"]).clients())
     });
 
     socket.on("chooseDifferentGenres", () => {
@@ -104,6 +132,20 @@ function onLoad() {
         
         document.getElementById("page1").remove();
 
+        var leaveButton = document.createElement("button");
+        leaveButton.id = "leaveButton";
+        var leaveButtonTextNode = document.createTextNode("Close Room");
+        leaveButton.appendChild(leaveButtonTextNode);
+        leaveButton.addEventListener("click", () => {
+            var page;
+            if (!!document.getElementById("page2")) {
+                page = 2;
+            } else {
+                page = 3;
+            }
+            socket.emit("disconnected", {"groupCode": groupCode, "page": page});
+        });
+        document.getElementById("leave").appendChild(leaveButton);
         document.getElementById("page2").className = "m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
 
         var p2title = document.createElement("h3");
@@ -111,6 +153,10 @@ function onLoad() {
         var p2titleTextNode = document.createTextNode("Great, your group code is " + groupCode + "! Please wait for everyone to join before starting.");
         p2title.appendChild(p2titleTextNode);
 
+        var p2room = document.createElement("p");
+        p2room.id = "p2room";
+        /*var p2roomTextNode = document.createTextNode("Users in room: " + people);
+        p2title.appendChild(p2roomTextNode);*/
         document.createElement("br");
         document.createElement("br");
 
@@ -118,12 +164,14 @@ function onLoad() {
         p2start.id = "p2start";
         p2start.class = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p2start.addEventListener("click", () => {
-            socket.emit("page3");
+            var text = document.getElementById("p2room").innerText;
+            socket.emit("page3", text.replace("Users in room: ", ""));
         });
         var p2startTextNode = document.createTextNode("Start Choosing");
         p2start.appendChild(p2startTextNode);
 
         document.getElementById("page2").appendChild(p2title);
+        document.getElementById("page2").appendChild(p2room);
         document.getElementById("page2").appendChild(p2start);
     });
 };

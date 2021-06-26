@@ -116,6 +116,7 @@ function onLoad() {
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";
+        p2start.class = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p2start.addEventListener("click", () => {
             socket.emit("page3");
         });

@@ -136,6 +136,7 @@ function onLoad() {
 
         var leaveButton = document.createElement("button");
         leaveButton.id = "leaveButton";
+        leaveButton.className = "text-center bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full";
         var leaveButtonTextNode = document.createTextNode("Close Room");
         leaveButton.appendChild(leaveButtonTextNode);
         leaveButton.addEventListener("click", () => {
@@ -148,7 +149,7 @@ function onLoad() {
             socket.emit("disconnected", {"groupCode": groupCode, "page": page});
         });
         document.getElementById("leave").appendChild(leaveButton);
-        document.getElementById("page2").className = "m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+        document.getElementById("page2").className = "mt-auto mb-auto mr-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
 
         var p2title = document.createElement("h3");
         p2title.id = "p2title";
@@ -164,7 +165,7 @@ function onLoad() {
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";
-        p2start.class = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
+        p2start.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p2start.addEventListener("click", () => {
             var text = document.getElementById("p2room").innerText;
             socket.emit("page3", text.replace("Users in room: ", ""));

@@ -14,9 +14,13 @@ TMDB_KEY = os.environ.get("TMDB_KEY")
 @app.before_first_request
 def before():
     os.remove("main.csv")
+    os.remove("films.csv")
     with open("main.csv", "w") as out:
         writer = csv.DictWriter(out, fieldnames=["code", "users"])
         writer.writerow({"code": "abcde", "users": 0})
+    with open("films.csv", "w") as out:
+        writer = csv.DictWriter(out, fieldnames=["code", "films"])
+        writer.writerow({"code": "abcde", "films": "|".join(["f", "g", "h", "i", "j", "k", "l", "m", "n", "o"])})
 
 @app.route("/")
 def home():
@@ -85,13 +89,16 @@ def genreSelect(data):
     session["genres"] = chosen
     session.modified = True
 
+    all_data = {"genres": data, "ids": chosen}
+
     room = session.get("roomName")
-    emit("updateGenres", data, to=room)
+    emit("updateGenres", all_data, to=room)
 
 @socketio.on("page4")
 def page4():
     chosenGenres = session.get("genres")
     room = session.get("roomName")
+    users = session.get("users")
     if len(chosenGenres) == 0:
         emit("addMoreGenres", to=room)
     else:
@@ -100,7 +107,43 @@ def page4():
         if len(data["results"]) == 0:
             emit("chooseDifferentGenres", to=room)
         else:
-            emit("startSelect", {"title": data["results"][0]["title"], "overview": data["results"][0]["overview"], "poster_path": data["results"][0]["poster_path"], "rating": data["results"][0]["vote_average"], "room": room}, to=room)
+            emit("startSelect", {"id": data["results"][0]["id"], "title": data["results"][0]["title"], "overview": data["results"][0]["overview"], "poster_path": data["results"][0]["poster_path"], "rating": data["results"][0]["vote_average"], "room": room, "users": users}, to=room)
+
+@socketio.on("postVote")
+def postVote(data):
+    room = data["room"]
+    if data["vote"]:
+        found = False
+        with open("films.csv") as inp, open("tmp_films.csv", "w") as out:
+            writer = csv.DictWriter(out, fieldnames=["code", "films"])
+            for row in csv.DictReader(inp, fieldnames=["code", "films"]):
+                if row["code"] == room:
+                    new = row["films"].split("|")
+                    if not (data["title"] in new):
+                        new.append([data["title"]])
+                        writer.writerow({"code": row["code"], "users": "|".join(new)})
+                        found = True
+                else:
+                    writer.writerow(row)
+            if not found:
+                writer.writerow({"code":  room, "films": "|".join([data["title"]])})
+        os.remove("films.csv")
+        os.rename("tmp_films.csv", "films.csv")
+    if data["done"] == data["users"]:
+        with open("films.csv") as inp:
+            for row in csv.DictReader(inp, fieldnames=["code", "films"]):
+                if row["code"] == room:
+                    rowFilms = row["films"].split("|")
+                    if data["title"] in rowFilms:
+                        similarFilm = requests.get("https://api.themoviedb.org/3/movie/" + str(data["id"]) + "/similar?api_key=" + TMDB_KEY + "&language=en-US&page=1").json()
+                        emit("nextMovie", {"title": similarFilm["results"][0]["title"], "overview": similarFilm["results"][0]["overview"], "poster_path": similarFilm["results"][0]["poster_path"], "rating": similarFilm["results"][0]["vote_average"], "orderNumber": data["orderNumber"]}, to=room)
+                    else:
+                        genreString = ",".join([str(genre) for genre in data["genres"]])
+                        otherFilm = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=" + TMDB_KEY + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genreString).json()
+                        emit("nextMovie", {"title": otherFilm["results"][data["orderNumber"] + 1]["title"], "overview": otherFilm["results"][data["orderNumber"] + 1]["overview"], "poster_path": otherFilm["results"][data["orderNumber"] + 1]["poster_path"], "rating": otherFilm["results"][data["orderNumber"] + 1]["vote_average"], "orderNumber": data["orderNumber"] + 2}, to=room)
+    else:
+        emit("waitForVote", {"users": data["users"], "room": room}, to=room)
+
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

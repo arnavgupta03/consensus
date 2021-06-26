@@ -119,6 +119,7 @@ function onLoad() {
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
+        p3checkboxGroup.className = "grid grid-flow-col";
         for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";

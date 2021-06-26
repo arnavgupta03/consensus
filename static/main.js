@@ -59,7 +59,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = parseInt(document.getElementById("p4users").innerText);
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
-            socket.emit("postVote", {"vote": true, "users": users, "done": done});
+            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": filmInfo["room"]});
         });
 
         var p4not = document.createElement("button");
@@ -70,7 +70,9 @@ function onLoad() {
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
             document.getElementById("p4watch").style.visibility = "hidden";
             document.getElementById("p4not").style.visibility = "hidden";
-            socket.emit("postVote", {"vote": true, "users": users, "done": done});
+            var users = parseInt(document.getElementById("p4users").innerText);
+            var done = parseInt(document.getElementById("p4done").innerText) + 1;
+            socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": filmInfo["room"]});
         });
 
         var p4userInfo = document.createElement("div");

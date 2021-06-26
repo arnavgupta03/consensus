@@ -71,7 +71,6 @@ def page3(users):
     genres = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key=" + TMDB_KEY + "&language=en-US").json()
     session["genres"] = []
     session["users"] = users
-    print(users)
     emit("switchPageThree", genres, to=room)
 
 @socketio.on("genreSelect")
@@ -92,17 +91,16 @@ def genreSelect(data):
 @socketio.on("page4")
 def page4():
     chosenGenres = session.get("genres")
-    room = session.get("room")
+    room = session.get("roomName")
     if len(chosenGenres) == 0:
-        emit("addMoreGenres")
+        emit("addMoreGenres", to=room)
     else:
         genreString = ",".join([str(genre) for genre in chosenGenres])
         data = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=" + TMDB_KEY + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genreString).json()
         if len(data["results"]) == 0:
-            emit("chooseDifferentGenres")
+            emit("chooseDifferentGenres", to=room)
         else:
-            emit("startSelect", {"title": data["results"][0]["title"], "overview": data["results"][0]["overview"], "poster_path": data["results"][0]["poster_path"], "rating": data["results"][0]["vote_average"], "room": room})
-
+            emit("startSelect", {"title": data["results"][0]["title"], "overview": data["results"][0]["overview"], "poster_path": data["results"][0]["poster_path"], "rating": data["results"][0]["vote_average"], "room": room}, to=room)
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

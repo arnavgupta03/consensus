@@ -31,7 +31,26 @@ def page3():
     room = session.get("roomName")
     print("got here " + room)
     genres = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key=" + TMDB_KEY + "&language=en-US").json()
+    session["genres"] = []
     emit("switchPageThree", genres, to=room)
+
+@socketio.on("genreSelect")
+def genreSelect(data):
+    allGenres = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key=" + TMDB_KEY + "&language=en-US").json()
+
+    chosen = []
+
+    for i in data:
+        chosen.append(allGenres["genres"][i]["id"])
+
+    session["genres"] = chosen
+    session.modified = True
+
+    print(session.get("genres"))
+
+    room = session.get("roomName")
+    emit("updateGenres", data, to=room)
+
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

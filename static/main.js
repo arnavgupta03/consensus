@@ -4,21 +4,37 @@ function onLoad() {
         socket.emit("connect");
     });
 
+    socket.on("updateGenres", function(genres) {
+        for (var i = 0; i < genres.length; i++) {
+            document.getElementById("p3checkbox" + genres[i]).checked = true;
+        }
+    });
+
     socket.on("switchPageThree", function(genres) {
         document.getElementById("page2").remove();
 
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
-        var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)!");
+        var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genres to watch.");
         p3title.appendChild(p3titleTextNode);
         document.getElementById("page3").appendChild(p3title);
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
-        for (var i = 0; i < 18; i++) {
+        for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";
             p3checkbox.id = "p3checkbox" + i.toString();
+            p3checkbox.addEventListener("click", function() {
+                var checked = [];
+                for (var i = 0; i < 19; i++) {
+                    if (document.getElementById("p3checkbox" + i.toString()).checked) {
+                        checked.push(i);
+                        document.getElementById("p3checkbox" + i.toString()).checked = false;
+                    }
+                }
+                socket.emit("genreSelect", checked);
+            });
             p3checkboxGroup.appendChild(p3checkbox)
 
             var p3label = document.createElement("label");
@@ -26,10 +42,16 @@ function onLoad() {
             var p3labelTextNode = document.createTextNode(genres["genres"][i]["name"]);
             p3label.appendChild(p3labelTextNode);
             p3checkboxGroup.appendChild(p3label);
-
-            //TODO: add onfocus to checkboxes to make sure they actually send the messages
         }
+        var p3button = document.createElement("button");
+        p3button.id = "p3button";
+        var p3buttonTextNode = document.createTextNode("Submit Genres");
+        p3button.appendChild(p3buttonTextNode);
+        p3button.addEventListener("click", function() {
+            socket.emit("page4");
+        });
         document.getElementById("page3").appendChild(p3checkboxGroup);
+        document.getElementById("page3").appendChild(p3button);
     });
 
     document.getElementById("p1joinCreateGroup").addEventListener("click", function() {

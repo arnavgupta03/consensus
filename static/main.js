@@ -52,20 +52,20 @@ function onLoad() {
         var p4watch = document.createElement("button");
         p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
         p4watch.addEventListener("click", () => {
-
+            document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
+            socket.emit("postVote", true);
         });
 
         var p4not = document.createElement("button");
         p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
         p4not.addEventListener("click", () => {
-
+            document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
+            socket.emit("postVote", false);
         });
 
         document.getElementById("page4").appendChild(p4movieCard);
         document.getElementById("page4").appendChild(p4watch);
         document.getElementById("page4").appendChild(p4not);
-
-        console.log(io.in(filmInfo["room"]).clients())
     });
 
     socket.on("chooseDifferentGenres", () => {
@@ -87,7 +87,7 @@ function onLoad() {
 
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
-        var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch.");
+        var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch. Only whoever chose the last genre may submit.");
         p3title.appendChild(p3titleTextNode);
         document.getElementById("page3").appendChild(p3title);
 
@@ -105,6 +105,7 @@ function onLoad() {
                         document.getElementById("p3checkbox" + i.toString()).checked = false;
                     }
                 }
+                document.getElementById("p3button").style.visibility = "visible";
                 socket.emit("genreSelect", checked);
             });
             p3checkboxGroup.appendChild(p3checkbox)
@@ -117,6 +118,7 @@ function onLoad() {
         }
         var p3button = document.createElement("button");
         p3button.id = "p3button";
+        p3button.style.visibility = "hidden";
         var p3buttonTextNode = document.createTextNode("Submit Genres");
         p3button.appendChild(p3buttonTextNode);
         p3button.addEventListener("click", () => {

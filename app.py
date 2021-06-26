@@ -136,22 +136,26 @@ def postVote(data):
     if data["done"] == data["users"]:
         with open("films.csv") as inp:
             for row in csv.DictReader(inp, fieldnames=["code", "films"]):
+                doneSomething = False
                 if row["code"] == room:
                     rowFilms = row["films"].split("|")
-                    if data["title"] in rowFilms:
+                    print(len(rowFilms))
+                    if len(rowFilms) == 3:
+                        emit("startRanking", rowFilms)
+                        doneSomething = True
+                    elif data["title"] in rowFilms:
                         similarFilm = requests.get("https://api.themoviedb.org/3/movie/" + str(data["id"]) + "/similar?api_key=" + TMDB_KEY + "&language=en-US&page=1").json()
                         emit("nextMovie", {"id": similarFilm["results"][0]["id"], "title": similarFilm["results"][0]["title"], "overview": similarFilm["results"][0]["overview"], "poster_path": similarFilm["results"][0]["poster_path"], "rating": similarFilm["results"][0]["vote_average"], "orderNumber": data["orderNumber"]}, to=room)
-                        break
+                        doneSomething = True
                     else:
                         genreString = ",".join([str(genre) for genre in [data["genres"]]])
                         otherFilm = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=" + TMDB_KEY + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genreString).json()
                         emit("nextMovie", {"id": otherFilm["results"][int(data["orderNumber"]) + 1]["id"], "title": otherFilm["results"][int(data["orderNumber"]) + 1]["title"], "overview": otherFilm["results"][int(data["orderNumber"]) + 1]["overview"], "poster_path": otherFilm["results"][int(data["orderNumber"]) + 1]["poster_path"], "rating": otherFilm["results"][int(data["orderNumber"]) + 1]["vote_average"], "orderNumber": int(data["orderNumber"]) + 2}, to=room)
-                        break
-                else:
-                    genreString = ",".join([str(genre) for genre in [data["genres"]]])
-                    otherFilm = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=" + TMDB_KEY + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genreString).json()
-                    emit("nextMovie", {"id": otherFilm["results"][int(data["orderNumber"]) + 1]["id"], "title": otherFilm["results"][int(data["orderNumber"]) + 1]["title"], "overview": otherFilm["results"][int(data["orderNumber"]) + 1]["overview"], "poster_path": otherFilm["results"][int(data["orderNumber"]) + 1]["poster_path"], "rating": otherFilm["results"][int(data["orderNumber"]) + 1]["vote_average"], "orderNumber": int(data["orderNumber"]) + 2}, to=room)
-                    break
+                        doneSomething = True
+            if not(doneSomething):
+                genreString = ",".join([str(genre) for genre in [data["genres"]]])
+                otherFilm = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=" + TMDB_KEY + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + genreString).json()
+                emit("nextMovie", {"id": otherFilm["results"][int(data["orderNumber"]) + 1]["id"], "title": otherFilm["results"][int(data["orderNumber"]) + 1]["title"], "overview": otherFilm["results"][int(data["orderNumber"]) + 1]["overview"], "poster_path": otherFilm["results"][int(data["orderNumber"]) + 1]["poster_path"], "rating": otherFilm["results"][int(data["orderNumber"]) + 1]["vote_average"], "orderNumber": int(data["orderNumber"]) + 2}, to=room)
     else:
         emit("waitForVote", {"users": data["users"], "room": room}, to=room)
 

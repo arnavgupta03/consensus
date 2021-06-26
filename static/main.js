@@ -4,7 +4,13 @@ function onLoad() {
         socket.emit("connect");
     });
 
-    socket.on("waitForVote", function() {
+    socket.on("startRanking", function(films) {
+        localStorage.setItem("rankedFilms", films);
+
+        
+    });
+
+    socket.on("waitForVote", () => {
         document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
     });
 

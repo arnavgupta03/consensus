@@ -86,7 +86,7 @@ function onLoad() {
 
         var p4poster = document.createElement("img");
         p4poster.id = "p4poster";
-        p4poster.className = "w-16 h-16";
+        p4poster.className = "w-16 h-48";
         p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
         p4movieCard.appendChild(p4poster);
 

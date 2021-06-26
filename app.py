@@ -2,6 +2,9 @@ from flask import Flask, render_template, session
 import requests, os
 from flask_socketio import SocketIO, send, emit, join_room
 from werkzeug import debug
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret"
@@ -27,7 +30,8 @@ def on_join(room):
 def page3():
     room = session.get("roomName")
     print("got here " + room)
-    emit("switchPageThree", to=room)
+    genres = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key=" + TMDB_KEY + "&language=en-US").json()
+    emit("switchPageThree", genres, to=room)
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

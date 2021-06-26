@@ -50,22 +50,46 @@ function onLoad() {
         p4movieCard.appendChild(p4poster);
 
         var p4watch = document.createElement("button");
+        p4watch.id = "p4watch";
         p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
         p4watch.addEventListener("click", () => {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
-            socket.emit("postVote", true);
+            //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
+            document.getElementById("p4watch").style.visibility = "hidden";
+            document.getElementById("p4not").style.visibility = "hidden";
+            var users = parseInt(document.getElementById("p4users").innerText);
+            var done = parseInt(document.getElementById("p4done").innerText) + 1;
+            socket.emit("postVote", {"vote": true, "users": users, "done": done});
         });
 
         var p4not = document.createElement("button");
+        p4not.id = "p4not";
         p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
         p4not.addEventListener("click", () => {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
-            socket.emit("postVote", false);
+            //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
+            document.getElementById("p4watch").style.visibility = "hidden";
+            document.getElementById("p4not").style.visibility = "hidden";
+            socket.emit("postVote", {"vote": true, "users": users, "done": done});
         });
+
+        var p4userInfo = document.createElement("div");
+        p4userInfo.id = "p4userInfo";
+        var p4users = document.createElement("p");
+        p4users.id = "p4users";
+        p4users.innerText = filmInfo["users"];
+        console.log(filmInfo["users"]);
+        var p4done = document.createElement("p");
+        p4done.id = "p4done";
+        p4done.innerText = "0";
+
+        p4userInfo.appendChild(p4users);
+        p4userInfo.appendChild(p4done);
 
         document.getElementById("page4").appendChild(p4movieCard);
         document.getElementById("page4").appendChild(p4watch);
         document.getElementById("page4").appendChild(p4not);
+        document.getElementById("page4").appendChild(p4userInfo);
     });
 
     socket.on("chooseDifferentGenres", () => {

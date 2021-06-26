@@ -5,9 +5,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='main.js') }}"></script>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css') }}">
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
     <body onload="onLoad()">
-        <div id="page1">
+        <div id="page1" class="align-middle">
             <h1 id="p1mainTitle">Consensus</h1>
             <h3 id="p1mainDescript">Find a movie to watch together quicker!</h3>
             <h5 id="p1instructions">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>

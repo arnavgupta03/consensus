@@ -10,9 +10,9 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 def home():
     return render_template("index.html")
 
-@socketio.on("connected")
-def test_connect(info):
-    print(info)
+@socketio.on("connect")
+def test_connect():
+    print("Connected!")
 
 if __name__ == "__main__":
     socketio.run(app)

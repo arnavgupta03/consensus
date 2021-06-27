@@ -12,11 +12,13 @@ function onLoad() {
         var p6waiting = document.createElement("h2");
         p6waiting.id = "p6waiting";
         p6waiting.innerText = "Waiting...";
+        p6waiting.className = "text-9xl mt-4 mb-4";
         document.getElementById("page6").appendChild(p6waiting);
 
         var p6exp = document.createElement("h5");
         p6exp.id = "p6exp";
         p6exp.innerText = "We're just waiting for everyone to finish up";
+        p6exp.className = "text-3xl mt-16 mb-4"
         document.getElementById("page6").appendChild(p6exp);
         return;
     });
@@ -29,24 +31,30 @@ function onLoad() {
             document.getElementById("page6").remove();
         }
 
-        document.getElementById("page7").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+        document.getElementById("page7").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center grid grid-cols-2 gap-0";
 
         var finalPoster = document.createElement("img");
         finalPoster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + finalFilm["poster"];
         finalPoster.id = "finalPoster";
-        finalPoster.className = "w-24 h-36";
+        finalPoster.className = "w-60 h-90 mt-8 mb-8 ml-32";
         document.getElementById("page7").appendChild(finalPoster);
+
+        var finalside = document.createElement("div");
+        finalside.id = "finalside";
 
         var finalTitle = document.createElement("h3");
         finalTitle.innerText = "Here it is!";
         finalTitle.id = "finalTitle";
-        document.getElementById("page7").appendChild(finalTitle);
+        finalTitle.className = "text-center text-6xl mt-8 mb-16 mr-32"
+        finalside.appendChild(finalTitle);
 
         var finalMovieTitle = document.createElement("h3");
         finalMovieTitle.innerText = finalFilm["title"];
         finalMovieTitle.id = "finalMovieTitle";
-        finalMovieTitle.className = "font-bold";
-        document.getElementById("page7").appendChild(finalMovieTitle);
+        finalMovieTitle.className = "font-bold text-center text-6xl mt-8 mb-8 mr-32";
+        finalside.appendChild(finalMovieTitle);
+
+        document.getElementById("page7").appendChild(finalside);
     });
 
     socket.on("startRanking", function(films) {
@@ -59,12 +67,12 @@ function onLoad() {
         var p5title = document.createElement("h3");
         p5title.id = "p5title";
         p5title.innerText = "Here are the movies you\'re interested in watching. Rank them from 1 to " + films["films"].length + " in order of preference.";
+        p5title.className = "text-3xl text-center mt-4 mb-8 ml-4 mr-4";
         document.getElementById("page5").appendChild(p5title);
-
-        document.getElementById("page5").appendChild(document.createElement("br"));
 
         var p5rankingGroup = document.createElement("div");
         p5rankingGroup.id = "p5rankingGroup";
+        p5rankingGroup.className = "grid grid-rows-3 gap-2";
 
         for (var i = 0; i < films["films"].length; i++) {
             var p5rankinput = document.createElement("input");
@@ -84,7 +92,7 @@ function onLoad() {
 
         var p5submit = document.createElement("button");
         p5submit.id = "p5submit";
-        p5submit.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
+        p5submit.className = "mt-4 text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p5submit.innerText = "Submit Rankings";
         p5submit.addEventListener("click", function() {
             var films = localStorage.getItem("rankedFilms").split(',');
@@ -196,7 +204,7 @@ function onLoad() {
         p4descript.id = "p4descript";
         var p4descriptTextNode = document.createTextNode(filmInfo["overview"]);
         p4descript.appendChild(p4descriptTextNode);
-        p4descript.className = "text-lg mt-4 mb-4";
+        p4descript.className = "text-sm mt-4 mb-4";
         p4movieInfo.appendChild(p4descript);
 
         var p4ratingLabel = document.createElement("h4");
@@ -278,7 +286,7 @@ function onLoad() {
 
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
-        p3title.className = "text-center text-4xl ml-8 mr-8";
+        p3title.className = "text-center text-4xl ml-8 mr-8 mb-8";
         var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch. Only whoever chose the last genre may submit.");
         p3title.appendChild(p3titleTextNode);
         document.getElementById("page3").appendChild(p3title);
@@ -351,18 +359,18 @@ function onLoad() {
         var p2title = document.createElement("h3");
         p2title.id = "p2title";
         var p2titleTextNode = document.createTextNode("Great, your group code is " + groupCode + "! Please wait for everyone to join before starting.");
-        p2title.className = "text-4xl text-center ml-8 mr-8";
+        p2title.className = "text-4xl text-center ml-8 mr-8 mt-4 mb-4";
         p2title.appendChild(p2titleTextNode);
 
         var p2room = document.createElement("p");
         p2room.id = "p2room";
-        p2room.className = "text-center text-2xl"
+        p2room.className = "text-center text-2xl mt-4 mb-4"
         /*var p2roomTextNode = document.createTextNode("Users in room: " + people);
         p2title.appendChild(p2roomTextNode);*/
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";
-        p2start.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
+        p2start.className = "text-center mt-4 mb-4 bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p2start.addEventListener("click", function() {
             var text = document.getElementById("p2room").innerText;
             socket.emit("page3", text.replace("Users in room: ", ""));

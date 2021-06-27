@@ -11,19 +11,12 @@
     <body onload="onLoad()" class="bg-yellow-300 flex h-screen">
         <br><br>
         <div id="page1" class="m-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center">
-            <br>
-            <h1 id="p1mainTitle" class="text-center text-6xl align-middle font-extrabold">Consensus</h1>
-            <br>
-            <h3 id="p1mainDescript" class="text-center text-3xl align-middle">Find a movie to watch together quicker!</h3>
-            <br>
-            <h5 id="p1instructions" class="text-center text-xl align-middle">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
-            <br>
-            <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();" class="rounded focus:ring-2 focus:ring-red-500">
-            <br>
-            <button id="p1joinCreateGroup" class="text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full">Join/Create Group</button>
-
-            <br><br>
-            <p class="text-center">Movie information from TMDB.</p>
+            <h1 id="p1mainTitle" class="text-center text-6xl align-middle font-extrabold mt-4 mb-8">Consensus</h1>
+            <h3 id="p1mainDescript" class="text-center text-3xl align-middle mb-4">Find a movie to watch together quicker!</h3>
+            <h5 id="p1instructions" class="text-center text-xl align-middle mt-4 mb-4 ml-4 mr-4">To get started, input your 4 character group code if you already have a group, or input any 4 characters to create a new group.</h5>
+            <input id="p1groupCode" type="text" maxlength="4" placeholder="Group Code" onkeyup="this.value = this.value.toUpperCase();" class="rounded focus:ring-2 focus:ring-red-500 mt-4 mb-4">
+            <button id="p1joinCreateGroup" class="text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full mt-4">Join/Create Group</button>
+            <p class="text-center mt-8">Movie information from TMDB.</p>
         </div>
         <div id="leave"></div>
         <div id="page2"></div>

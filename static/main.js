@@ -29,9 +29,12 @@ function onLoad() {
             document.getElementById("page6").remove();
         }
 
+        document.getElementById("page7").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var finalPoster = document.createElement("img");
         finalPoster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + finalFilm["poster"];
         finalPoster.id = "finalPoster";
+        finalPoster.className = "w-24 h-36";
         document.getElementById("page7").appendChild(finalPoster);
 
         var finalTitle = document.createElement("h3");
@@ -42,6 +45,7 @@ function onLoad() {
         var finalMovieTitle = document.createElement("h3");
         finalMovieTitle.innerText = finalFilm["title"];
         finalMovieTitle.id = "finalMovieTitle";
+        finalMovieTitle.className = "font-bold";
         document.getElementById("page7").appendChild(finalMovieTitle);
     });
 

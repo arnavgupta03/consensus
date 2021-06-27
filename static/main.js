@@ -148,49 +148,25 @@ function onLoad() {
 
         document.getElementById("page3").remove();
 
-        document.getElementById("page4").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow flex flex-col items-center";
+        document.getElementById("page4").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow flex flex-col";
 
         var p4instruct = document.createElement("h3");
         p4instruct.id = "p4instruct";
-        p4instruct.className = "text-center text-xl";
+        p4instruct.className = "text-center text-xl mt-4";
         var p4instructTextNode = document.createTextNode("Now we're going to give you some movies! Tell us if you'd want to watch it or not.");
         p4instruct.appendChild(p4instructTextNode);
         document.getElementById("page4").appendChild(p4instruct);
 
         var p4movieCard = document.createElement("div");
-        p4movieCard.className = "float-right text-center";
+        p4movieCard.className = "grid grid-cols-4 mt-8 pl-8 pr-8 text-center gap-0";
 
-        var p4title = document.createElement("h3");
-        p4title.id = "p4title";
-        var p4titleTextNode = document.createTextNode(filmInfo["title"]);
-        p4title.appendChild(p4titleTextNode);
-        p4movieCard.appendChild(p4title);
-
-        var p4descript = document.createElement("p");
-        p4descript.id = "p4descript";
-        var p4descriptTextNode = document.createTextNode(filmInfo["overview"]);
-        p4descript.appendChild(p4descriptTextNode);
-        p4movieCard.appendChild(p4descript);
-
-        var p4rating = document.createElement("h4");
-        p4rating.id = "p4rating";
-        var p4ratingTextNode = document.createTextNode(filmInfo["rating"]);
-        p4rating.appendChild(p4ratingTextNode);
-        p4movieCard.appendChild(p4rating);
-
-        var p4moviePoster = document.createElement("div");
-        p4moviePoster.className = "ml-auto mr-auto";
-
-        var p4poster = document.createElement("img");
-        p4poster.id = "p4poster";
-        p4poster.className = "w-24 h-36";
-        p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
-        p4moviePoster.appendChild(p4poster);
+        var p4movieInfo = document.createElement("div");
+        p4movieInfo.className = "text-center";
 
         var p4watch = document.createElement("button");
         p4watch.id = "p4watch";
-        p4watch.className = "float-left mt-5 items-start";
-        p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
+        p4watch.className = "w-36 h-36 bg-red-300 hover:bg-red-500 text-white font-bold rounded-full mt-24 mb-24 ml-16";
+        p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='currentColor' class='bi bi-camera-reels-fill m-8' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>";
         p4watch.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
@@ -201,11 +177,50 @@ function onLoad() {
             console.log(users + " " + done);
             socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
+        p4movieCard.appendChild(p4watch);
+
+        var p4poster = document.createElement("img");
+        p4poster.id = "p4poster";
+        p4poster.className = "w-54 h-72";
+        p4poster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + filmInfo["poster_path"];
+        p4movieCard.appendChild(p4poster);
+
+        var p4title = document.createElement("h3");
+        p4title.id = "p4title";
+        var p4titleTextNode = document.createTextNode(filmInfo["title"]);
+        p4title.appendChild(p4titleTextNode);
+        p4title.className = "text-3xl mt-4 mb-4";
+        p4movieInfo.appendChild(p4title);
+
+        var p4descript = document.createElement("p");
+        p4descript.id = "p4descript";
+        var p4descriptTextNode = document.createTextNode(filmInfo["overview"]);
+        p4descript.appendChild(p4descriptTextNode);
+        p4descript.className = "text-lg mt-4 mb-4";
+        p4movieInfo.appendChild(p4descript);
+
+        var p4ratingLabel = document.createElement("h4");
+        p4ratingLabel.id = "p4ratingLabel";
+        p4ratingLabel.innerText = "Rating"
+        p4ratingLabel.className = "text-md mt-4";
+        p4movieInfo.appendChild(p4ratingLabel);
+
+        var p4rating = document.createElement("h4");
+        p4rating.id = "p4rating";
+        var p4ratingTextNode = document.createTextNode(filmInfo["rating"]);
+        p4rating.appendChild(p4ratingTextNode);
+        p4ratingLabel.className = "text-md mb-4";
+        p4movieInfo.appendChild(p4rating);
+
+        p4movieCard.appendChild(p4movieInfo);
+
+        /*var p4moviePoster = document.createElement("div");
+        p4moviePoster.className = "ml-auto mr-auto";*/
 
         var p4not = document.createElement("button");
         p4not.id = "p4not";
-        p4not.className = "float-right mt-5 items-end";
-        p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
+        p4not.className = "w-36 h-36 bg-red-300 hover:bg-red-500 text-white font-bold rounded-full mt-24 mb-24 ml-16";
+        p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='currentColor' class='bi bi-x-lg m-8' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>";
         p4not.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
@@ -229,10 +244,11 @@ function onLoad() {
         p4userInfo.appendChild(p4users);
         p4userInfo.appendChild(p4done);
 
-        document.getElementById("page4").appendChild(p4moviePoster);
+        p4movieCard.appendChild(p4not);
+
+        //document.getElementById("page4").appendChild(p4moviePoster);
         document.getElementById("page4").appendChild(p4movieCard);
-        document.getElementById("page4").appendChild(p4watch);
-        document.getElementById("page4").appendChild(p4not);
+        //document.getElementById("page4").appendChild(p4watch);
         document.getElementById("page4").appendChild(p4userInfo);
     });
 
@@ -262,13 +278,14 @@ function onLoad() {
 
         var p3title = document.createElement("h3");
         p3title.id = "p3title";
-        p3title.className = "text-center";
+        p3title.className = "text-center text-4xl ml-8 mr-8";
         var p3titleTextNode = document.createTextNode("Alright, let's start by choosing the genre(s)! Only hit Submit once everyone's agreed on which genre/genre combo to watch. Only whoever chose the last genre may submit.");
         p3title.appendChild(p3titleTextNode);
         document.getElementById("page3").appendChild(p3title);
 
         var p3checkboxGroup = document.createElement("div");
         p3checkboxGroup.id = "p3checkboxGroup";
+        p3checkboxGroup.className = "grid grid-cols-6 grid-flow-row ml-16 mr-16";
         for (var i = 0; i < 19; i++) {
             var p3checkbox = document.createElement("input");
             p3checkbox.type = "checkbox";
@@ -302,6 +319,8 @@ function onLoad() {
         p3button.addEventListener("click", function() {
             socket.emit("page4");
         });
+        document.getElementById("page3").appendChild(document.createElement("br"));
+        document.getElementById("page3").appendChild(document.createElement("br"));
         document.getElementById("page3").appendChild(p3checkboxGroup);
         document.getElementById("page3").appendChild(p3button);
     });
@@ -332,10 +351,12 @@ function onLoad() {
         var p2title = document.createElement("h3");
         p2title.id = "p2title";
         var p2titleTextNode = document.createTextNode("Great, your group code is " + groupCode + "! Please wait for everyone to join before starting.");
+        p2title.className = "text-4xl text-center ml-8 mr-8";
         p2title.appendChild(p2titleTextNode);
 
         var p2room = document.createElement("p");
         p2room.id = "p2room";
+        p2room.className = "text-center text-2xl"
         /*var p2roomTextNode = document.createTextNode("Users in room: " + people);
         p2title.appendChild(p2roomTextNode);*/
 
@@ -350,6 +371,8 @@ function onLoad() {
         p2start.appendChild(p2startTextNode);
 
         document.getElementById("page2").appendChild(p2title);
+        document.getElementById("page2").appendChild(document.createElement("br"));
+        document.getElementById("page2").appendChild(document.createElement("br"));
         document.getElementById("page2").appendChild(p2room);
         document.getElementById("page2").appendChild(document.createElement("br"));
         document.getElementById("page2").appendChild(document.createElement("br"));

@@ -141,7 +141,7 @@ def postVote(data):
                     rowFilms = row["films"].split("|")
                     print(len(rowFilms))
                     if len(rowFilms) == 3:
-                        emit("startRanking", rowFilms)
+                        emit("startRanking", rowFilms, to=room)
                         doneSomething = True
                     elif data["title"] in rowFilms:
                         similarFilm = requests.get("https://api.themoviedb.org/3/movie/" + str(data["id"]) + "/similar?api_key=" + TMDB_KEY + "&language=en-US&page=1").json()

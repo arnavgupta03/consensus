@@ -7,7 +7,12 @@ function onLoad() {
     socket.on("startRanking", function(films) {
         localStorage.setItem("rankedFilms", films);
 
-        
+        document.getElementById("page4").remove();
+
+        var p5title = document.createElement("h3");
+        p5title.id = "p5title";
+        p5title.innerText = "Here are the movies you\'re interested in watching. Rank them in order of preference.";
+        document.getElementById("page5").appendChild(p5title);
     });
 
     socket.on("waitForVote", () => {

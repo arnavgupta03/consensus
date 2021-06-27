@@ -11,8 +11,50 @@ function onLoad() {
 
         var p5title = document.createElement("h3");
         p5title.id = "p5title";
-        p5title.innerText = "Here are the movies you\'re interested in watching. Rank them in order of preference.";
+        p5title.innerText = "Here are the movies you\'re interested in watching. Rank them from 1 to " + films.length + " in order of preference.";
         document.getElementById("page5").appendChild(p5title);
+
+        var p5rankingGroup = document.createElement("div");
+        p5rankingGroup.id = "p5rankingGroup";
+
+        for (var i = 0; i < films.length; i++) {
+            var p5rankinput = document.createElement("input");
+            p5rankinput.id = "p5rankinput" + i;
+            p5rankinput.type = "text";
+
+            var p5ranklabel = document.createElement("label");
+            p5ranklabel.id = "p5ranklabel" + i;
+            p5ranklabel.innerText = films[i];
+            p5ranklabel.for = "p5rankinput" + i;
+
+            p5rankingGroup.appendChild(p5ranklabel);
+            p5rankingGroup.appendChild(p5rankinput);
+        }
+
+        document.getElementById("page5").appendChild(p5rankingGroup);
+
+        var p5submit = document.createElement("button");
+        p5submit.id = "p5submit";
+        p5submit.innerText = "Submit Rankings";
+        p5submit.addEventListener("click", () => {
+            var films = localStorage.getItem("rankedFilms").split(',');
+            var scores = [];
+            for (var i = 0; i < films.length; i++) {
+                var input = document.getElementById("p5rankinput" + i).value;
+                if (isNaN(input) || input > 3 || input < 1) {
+                    alert("Please make sure that all numbers inputted are between 1 and " + films.length);
+                    return;
+                } else {
+                    scores.push(input);
+                }
+            }
+            console.log(scores);
+            var users = localStorage.getItem("users");
+            var room = localStorage.getItem("room");
+            socket.emit("sendRanking", {"films": films, "scores": scores, "users": users, "room": room});
+        });
+
+        document.getElementById("page5").appendChild(p5submit);
     });
 
     socket.on("waitForVote", () => {
@@ -235,8 +277,6 @@ function onLoad() {
         p2room.id = "p2room";
         /*var p2roomTextNode = document.createTextNode("Users in room: " + people);
         p2title.appendChild(p2roomTextNode);*/
-        document.createElement("br");
-        document.createElement("br");
 
         var p2start = document.createElement("button");
         p2start.id = "p2start";
@@ -250,6 +290,8 @@ function onLoad() {
 
         document.getElementById("page2").appendChild(p2title);
         document.getElementById("page2").appendChild(p2room);
+        document.getElementById("page2").appendChild(document.createElement("br"));
+        document.getElementById("page2").appendChild(document.createElement("br"));
         document.getElementById("page2").appendChild(p2start);
     });
 };

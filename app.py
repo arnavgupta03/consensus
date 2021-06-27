@@ -21,6 +21,9 @@ def before():
     with open("films.csv", "w") as out:
         writer = csv.DictWriter(out, fieldnames=["code", "films"])
         writer.writerow({"code": "abcde", "films": "|".join(["f", "g", "h", "i", "j", "k", "l", "m", "n", "o"])})
+    with open("rankings.csv", "w") as out:
+        writer = csv.DictWriter(out, fieldnames=["code", "rankings"])
+        writer.writerow({"code": "abcde", "rankings": "~".join(["|".join(['1', '3', '2']), "|".join(['2', '3', '1'])])})
 
 @app.route("/")
 def home():
@@ -159,6 +162,40 @@ def postVote(data):
     else:
         emit("waitForVote", {"users": data["users"], "room": room}, to=room)
 
+@socketio.on("sendRanking")
+def sendRanking(data):
+    users = data["users"]
+    films = data["films"]
+    scores = data["scores"]
+    room = data["room"]
+    found = False
+    with open("rankings.csv") as inp, open("tmp_rankings.csv", "w") as out:
+        writer = csv.DictWriter(out, fieldnames=["code", "rankings"])
+        for row in csv.DictReader(inp, fieldnames=["code", "rankings"]):
+            if row["code"] == room:
+                new = row["rankings"].split("~")
+                new.append("|".join(scores))
+                print(new)
+                writer.writerow({"code": row["code"], "rankings": "~".join(new)})
+                found = True
+            else:
+                writer.writerow(row)
+        if not found:
+            writer.writerow({"code":  room, "rankings": "~".join(["|".join(scores)])})
+    os.remove("rankings.csv")
+    os.rename("tmp_rankings.csv", "rankings.csv")
+    done = 0
+    with open("rankings.csv") as inp:
+        for row in csv.DictReader(inp, fieldnames=["code", "rankings"]):
+            if row["code"] == room:
+                new = row["rankings"].split("~")
+                done = len(new)
+    if users == done:
+        with open("rankings.csv") as inp:
+            for row in csv.DictReader(inp, fieldnames=["code", "rankings"]):
+                if row["code"] == room:
+                    new = row["rankings"].split("~")
+                    #fullscores = 
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

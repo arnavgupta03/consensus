@@ -136,7 +136,9 @@ def postVote(data):
                 writer.writerow({"code":  room, "films": "|".join([data["id"]])})
         os.remove("films.csv")
         os.rename("tmp_films.csv", "films.csv")
-    if data["done"] == data["users"]:
+    done = int(data["done"])
+    users = int(data["users"])
+    if done == users:
         with open("films.csv") as inp:
             for row in csv.DictReader(inp, fieldnames=["code", "films"]):
                 doneSomething = False

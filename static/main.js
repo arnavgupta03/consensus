@@ -194,6 +194,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = localStorage.getItem("users");
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
+            console.log(users + " " + done);
             socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 
@@ -208,6 +209,7 @@ function onLoad() {
             document.getElementById("p4not").style.visibility = "hidden";
             var users = localStorage.getItem("users");
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
+            console.log(users + " " + done);
             socket.emit("postVote", {"vote": false, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
 

@@ -190,12 +190,21 @@ def sendRanking(data):
             if row["code"] == room:
                 new = row["rankings"].split("~")
                 done = len(new)
+    print(str(users) + " " + str(done))
+    users = int(users)
+    done = int(done)
     if users == done:
+        final_rankings = []
         with open("rankings.csv") as inp:
             for row in csv.DictReader(inp, fieldnames=["code", "rankings"]):
                 if row["code"] == room:
-                    new = row["rankings"].split("~")
-                    #fullscores = 
+                    final_rankings = row["rankings"].split("~")
+        totals = [0] * len(films)
+        for user in range(users):
+            for film in range(len(films)):
+                info = final_rankings[user].split("|")
+                totals[film] += int(info[film])
+        emit("finalVerdict", films[totals.index(min(totals))], to=room)
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

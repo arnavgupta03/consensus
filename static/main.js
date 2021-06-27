@@ -4,6 +4,10 @@ function onLoad() {
         socket.emit("connect");
     });
 
+    socket.on("finalVerdict", function(finalFilm) {
+        
+    });
+
     socket.on("startRanking", function(films) {
         localStorage.setItem("rankedFilms", films);
 
@@ -41,7 +45,7 @@ function onLoad() {
         p5submit.id = "p5submit";
         p5submit.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p5submit.innerText = "Submit Rankings";
-        p5submit.addEventListener("click", () => {
+        p5submit.addEventListener("click", function() {
             var films = localStorage.getItem("rankedFilms").split(',');
             var scores = [];
             for (var i = 0; i < films.length; i++) {
@@ -62,7 +66,7 @@ function onLoad() {
         document.getElementById("page5").appendChild(p5submit);
     });
 
-    socket.on("waitForVote", () => {
+    socket.on("waitForVote", function() {
         document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
     });
 
@@ -146,7 +150,7 @@ function onLoad() {
         p4watch.id = "p4watch";
         p4watch.className = "float-left mt-5 items-start";
         p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
-        p4watch.addEventListener("click", () => {
+        p4watch.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
             document.getElementById("p4watch").style.visibility = "hidden";
@@ -160,7 +164,7 @@ function onLoad() {
         p4not.id = "p4not";
         p4not.className = "float-right mt-5 items-end";
         p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
-        p4not.addEventListener("click", () => {
+        p4not.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
             document.getElementById("p4watch").style.visibility = "hidden";
@@ -190,11 +194,11 @@ function onLoad() {
         document.getElementById("page4").appendChild(p4userInfo);
     });
 
-    socket.on("chooseDifferentGenres", () => {
+    socket.on("chooseDifferentGenres", function() {
         alert("No movies available for this genre combination.");
     });
 
-    socket.on("addMoreGenres", () => {
+    socket.on("addMoreGenres", function() {
         alert("Please add at least one genre");
     });
 
@@ -226,7 +230,7 @@ function onLoad() {
             p3checkbox.type = "checkbox";
             p3checkbox.id = "p3checkbox" + i.toString();
             p3checkbox.className = "form-checkbox";
-            p3checkbox.addEventListener("click", () => {
+            p3checkbox.addEventListener("click", function() {
                 var checked = [];
                 for (var i = 0; i < 19; i++) {
                     if (document.getElementById("p3checkbox" + i.toString()).checked) {
@@ -251,7 +255,7 @@ function onLoad() {
         p3button.style.visibility = "hidden";
         var p3buttonTextNode = document.createTextNode("Submit Genres");
         p3button.appendChild(p3buttonTextNode);
-        p3button.addEventListener("click", () => {
+        p3button.addEventListener("click", function() {
             socket.emit("page4");
         });
         document.getElementById("page3").appendChild(p3checkboxGroup);
@@ -269,7 +273,7 @@ function onLoad() {
         leaveButton.className = "text-center bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full";
         var leaveButtonTextNode = document.createTextNode("Close Room");
         leaveButton.appendChild(leaveButtonTextNode);
-        leaveButton.addEventListener("click", () => {
+        leaveButton.addEventListener("click", function() {
             var page;
             if (!!document.getElementById("page2")) {
                 page = 2;
@@ -294,7 +298,7 @@ function onLoad() {
         var p2start = document.createElement("button");
         p2start.id = "p2start";
         p2start.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
-        p2start.addEventListener("click", () => {
+        p2start.addEventListener("click", function() {
             var text = document.getElementById("p2room").innerText;
             socket.emit("page3", text.replace("Users in room: ", ""));
         });

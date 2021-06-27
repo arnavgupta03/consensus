@@ -4,31 +4,66 @@ function onLoad() {
         socket.emit("connect");
     });
 
+    socket.on("awaitingFinal", function() {
+        document.getElementById("page5").remove();
+
+        var p6waiting = document.createElement("h2");
+        p6waiting.id = "p6waiting";
+        p6waiting.innerText = "Waiting...";
+        document.getElementById("page6").appendChild(p6waiting);
+
+        var p6exp = document.createElement("h5");
+        p6exp.id = "p6exp";
+        p6exp.innerText = "We're just waiting for everyone to finish up";
+        document.getElementById("page6").appendChild(p6exp);
+        return;
+    });
+
     socket.on("finalVerdict", function(finalFilm) {
-        
+        if (!!document.getElementById("page5")){
+            document.getElementById("page5").remove();
+        }
+        if (!!document.getElementById("page6")){
+            document.getElementById("page6").remove();
+        }
+
+        var finalPoster = document.createElement("img");
+        finalPoster.src = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/" + finalFilm["poster"];
+        finalPoster.id = "finalPoster";
+        document.getElementById("page7").appendChild(finalPoster);
+
+        var finalTitle = document.createElement("h3");
+        finalTitle.innerText = "Here it is!";
+        finalTitle.id = "finalTitle";
+        document.getElementById("page7").appendChild(finalTitle);
+
+        var finalMovieTitle = document.createElement("h3");
+        finalMovieTitle.innerText = finalFilm["title"];
+        finalMovieTitle.id = "finalMovieTitle";
+        document.getElementById("page7").appendChild(finalMovieTitle);
     });
 
     socket.on("startRanking", function(films) {
-        localStorage.setItem("rankedFilms", films);
+        localStorage.setItem("rankedFilms", films["films"]);
 
         document.getElementById("page4").remove();
 
         var p5title = document.createElement("h3");
         p5title.id = "p5title";
-        p5title.innerText = "Here are the movies you\'re interested in watching. Rank them from 1 to " + films.length + " in order of preference.";
+        p5title.innerText = "Here are the movies you\'re interested in watching. Rank them from 1 to " + films["films"].length + " in order of preference.";
         document.getElementById("page5").appendChild(p5title);
 
         var p5rankingGroup = document.createElement("div");
         p5rankingGroup.id = "p5rankingGroup";
 
-        for (var i = 0; i < films.length; i++) {
+        for (var i = 0; i < films["films"].length; i++) {
             var p5rankinput = document.createElement("input");
             p5rankinput.id = "p5rankinput" + i;
             p5rankinput.type = "text";
 
             var p5ranklabel = document.createElement("label");
             p5ranklabel.id = "p5ranklabel" + i;
-            p5ranklabel.innerText = films[i];
+            p5ranklabel.innerText = films["titles"][i];
             p5ranklabel.for = "p5rankinput" + i;
 
             p5rankingGroup.appendChild(p5ranklabel);

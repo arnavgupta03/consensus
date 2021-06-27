@@ -122,8 +122,8 @@ def postVote(data):
             for row in csv.DictReader(inp, fieldnames=["code", "films"]):
                 if row["code"] == room:
                     new = row["films"].split("|")
-                    if not (data["title"] in new):
-                        new.append(data["title"])
+                    if not (data["id"] in new):
+                        new.append(data["id"])
                         print(new)
                         writer.writerow({"code": row["code"], "films": "|".join(new)})
                     else:
@@ -133,7 +133,7 @@ def postVote(data):
                     writer.writerow(row)
             print(found)
             if not found:
-                writer.writerow({"code":  room, "films": "|".join([data["title"]])})
+                writer.writerow({"code":  room, "films": "|".join([data["id"]])})
         os.remove("films.csv")
         os.rename("tmp_films.csv", "films.csv")
     if data["done"] == data["users"]:
@@ -144,9 +144,12 @@ def postVote(data):
                     rowFilms = row["films"].split("|")
                     print(len(rowFilms))
                     if len(rowFilms) == 3:
-                        emit("startRanking", rowFilms, to=room)
+                        filmTitles = []
+                        for film in rowFilms:
+                            filmTitles.append(requests.get("https://api.themoviedb.org/3/movie/" + film + "?api_key=" + TMDB_KEY + "&language=en-US").json()["title"])
+                        emit("startRanking", {"films": rowFilms, "titles": filmTitles}, to=room)
                         doneSomething = True
-                    elif data["title"] in rowFilms:
+                    elif data["id"] in rowFilms:
                         similarFilm = requests.get("https://api.themoviedb.org/3/movie/" + str(data["id"]) + "/similar?api_key=" + TMDB_KEY + "&language=en-US&page=1").json()
                         emit("nextMovie", {"id": similarFilm["results"][0]["id"], "title": similarFilm["results"][0]["title"], "overview": similarFilm["results"][0]["overview"], "poster_path": similarFilm["results"][0]["poster_path"], "rating": similarFilm["results"][0]["vote_average"], "orderNumber": data["orderNumber"]}, to=room)
                         doneSomething = True
@@ -204,7 +207,13 @@ def sendRanking(data):
             for film in range(len(films)):
                 info = final_rankings[user].split("|")
                 totals[film] += int(info[film])
-        emit("finalVerdict", films[totals.index(min(totals))], to=room)
+        finalFilmId = films[totals.index(min(totals))]
+        finalFilmData = requests.get("https://api.themoviedb.org/3/movie/" + finalFilmId + "?api_key=" + TMDB_KEY + "&language=en-US").json()
+        finalFilmTitle = finalFilmData["title"]
+        finalFilmPoster = finalFilmData["poster_path"]
+        emit("finalVerdict", {"id": finalFilmId, "title": finalFilmTitle, "poster": finalFilmPoster}, to=room)
+    else:
+        emit("awaitingFinal")
 
 if __name__ == "__main__":
     socketio.run(app, debug = True)

@@ -9,10 +9,14 @@ function onLoad() {
 
         document.getElementById("page4").remove();
 
+        document.getElementById("page5").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var p5title = document.createElement("h3");
         p5title.id = "p5title";
         p5title.innerText = "Here are the movies you\'re interested in watching. Rank them from 1 to " + films.length + " in order of preference.";
         document.getElementById("page5").appendChild(p5title);
+
+        document.getElementById("page5").appendChild(document.createElement("br"));
 
         var p5rankingGroup = document.createElement("div");
         p5rankingGroup.id = "p5rankingGroup";
@@ -35,6 +39,7 @@ function onLoad() {
 
         var p5submit = document.createElement("button");
         p5submit.id = "p5submit";
+        p5submit.className = "text-center bg-red-300 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-full";
         p5submit.innerText = "Submit Rankings";
         p5submit.addEventListener("click", () => {
             var films = localStorage.getItem("rankedFilms").split(',');

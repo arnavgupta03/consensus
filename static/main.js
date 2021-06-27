@@ -192,7 +192,7 @@ function onLoad() {
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
             document.getElementById("p4watch").style.visibility = "hidden";
             document.getElementById("p4not").style.visibility = "hidden";
-            var users = parseInt(document.getElementById("p4users").innerText);
+            var users = localStorage.getItem("users");
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
             socket.emit("postVote", {"vote": true, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
@@ -206,7 +206,7 @@ function onLoad() {
             //document.getElementById("p4done").innerText = parseInt(document.getElementById("p4done").innerText) + 1;
             document.getElementById("p4watch").style.visibility = "hidden";
             document.getElementById("p4not").style.visibility = "hidden";
-            var users = parseInt(document.getElementById("p4users").innerText);
+            var users = localStorage.getItem("users");
             var done = parseInt(document.getElementById("p4done").innerText) + 1;
             socket.emit("postVote", {"vote": false, "users": users, "done": done, "room": localStorage.getItem("room"), "title": localStorage.getItem("title"), "id": localStorage.getItem("id"), "orderNumber": localStorage.getItem("orderNumber"), "genres": localStorage.getItem("genres")});
         });
@@ -215,8 +215,7 @@ function onLoad() {
         p4userInfo.id = "p4userInfo";
         var p4users = document.createElement("p");
         p4users.id = "p4users";
-        p4users.innerText = filmInfo["users"];
-        localStorage.setItem("users", filmInfo["users"]);
+        p4users.innerText = localStorage.getItem("users");
         var p4done = document.createElement("p");
         p4done.id = "p4done";
         p4done.innerText = "0";
@@ -248,7 +247,9 @@ function onLoad() {
         }
     });
 
-    socket.on("switchPageThree", function(genres) {
+    socket.on("switchPageThree", function(data) {
+        genres = data["genres"]
+        localStorage.setItem("users", data["users"]);
         document.getElementById("page2").remove();
 
         document.getElementById("page3").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";

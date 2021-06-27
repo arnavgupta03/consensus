@@ -78,7 +78,7 @@ def page3(users):
     genres = requests.get("https://api.themoviedb.org/3/genre/movie/list?api_key=" + TMDB_KEY + "&language=en-US").json()
     session["genres"] = []
     session["users"] = users
-    emit("switchPageThree", genres, to=room)
+    emit("switchPageThree", {"genres": genres, "users": users}, to=room)
 
 @socketio.on("genreSelect")
 def genreSelect(data):

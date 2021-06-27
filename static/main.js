@@ -7,6 +7,8 @@ function onLoad() {
     socket.on("awaitingFinal", function() {
         document.getElementById("page5").remove();
 
+        document.getElementById("page6").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow align-middle flex flex-col justify-center items-center";
+
         var p6waiting = document.createElement("h2");
         p6waiting.id = "p6waiting";
         p6waiting.innerText = "Waiting...";

@@ -46,6 +46,20 @@ def test_disconnected(data):
                 writer.writerow(row)
     os.remove("main.csv")
     os.rename("tmp.csv", "main.csv")
+    with open("films.csv") as inp, open("tmp_films.csv", "w") as out:
+        writer = csv.DictWriter(out, fieldnames=["code", "films"])
+        for row in csv.DictReader(inp, fieldnames=["code", "films"]):
+            if not (row["code"] == groupCode):
+                writer.writerow(row)
+    os.remove("films.csv")
+    os.rename("tmp_films.csv", "films.csv")
+    with open("rankings.csv") as inp, open("tmp_rankings.csv", "w") as out:
+        writer = csv.DictWriter(out, fieldnames=["code", "rankings"])
+        for row in csv.DictReader(inp, fieldnames=["code", "rankings"]):
+            if not (row["code"] == groupCode):
+                writer.writerow(row)
+    os.remove("rankings.csv")
+    os.rename("tmp_rankings.csv", "rankings.csv")
     print("got here")
     emit("leaveUser", {"users": 0, "page": page}, to=groupCode)
     leave_room(groupCode)

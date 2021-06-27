@@ -102,7 +102,7 @@ function onLoad() {
 
         document.getElementById("page3").remove();
 
-        document.getElementById("page4").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow";
+        document.getElementById("page4").className = "mt-auto mr-auto mb-auto w-5/6 h-2/3 bg-indigo-400 rounded-tr-lg rounded-tl-lg rounded-br-lg rounded-bl-lg shadow flex flex-col items-center";
 
         var p4instruct = document.createElement("h3");
         p4instruct.id = "p4instruct";
@@ -112,7 +112,7 @@ function onLoad() {
         document.getElementById("page4").appendChild(p4instruct);
 
         var p4movieCard = document.createElement("div");
-        p4movieCard.className = "float-right w-1/2";
+        p4movieCard.className = "float-right text-center";
 
         var p4title = document.createElement("h3");
         p4title.id = "p4title";
@@ -133,7 +133,7 @@ function onLoad() {
         p4movieCard.appendChild(p4rating);
 
         var p4moviePoster = document.createElement("div");
-        p4moviePoster.className = "float-left";
+        p4moviePoster.className = "ml-auto mr-auto";
 
         var p4poster = document.createElement("img");
         p4poster.id = "p4poster";
@@ -143,7 +143,7 @@ function onLoad() {
 
         var p4watch = document.createElement("button");
         p4watch.id = "p4watch";
-        p4watch.className = "float-left";
+        p4watch.className = "float-left mt-5 items-start";
         p4watch.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-camera-reels-fill' viewBox='0 0 16 16'><path d='M6 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/><path d='M9 6a3 3 0 1 1 0-6 3 3 0 0 1 0 6z'/><path d='M9 6h.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7z'/></svg>Watch";
         p4watch.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
@@ -157,7 +157,7 @@ function onLoad() {
 
         var p4not = document.createElement("button");
         p4not.id = "p4not";
-        p4not.className = "float-right";
+        p4not.className = "float-right mt-5 items-end";
         p4not.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z'/></svg>Not";
         p4not.addEventListener("click", function() {
             document.getElementById("p4title").innerText = "Waiting for everyone to vote...";
